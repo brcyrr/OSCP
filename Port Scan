@@ -1,0 +1,8 @@
+#Full Port Scan
+nmap -p- --open -vvv 10.10.10.9 -oN fullportscan
+
+#Version Scan
+nmap -p 80,445 -sV -sC -vvv 10.10.10.9 oN versionscan
+
+#UDP Scan
+nmap -sU --open -vvv 10.10.10.9 -oN udpscan
