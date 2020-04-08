@@ -1,4 +1,31 @@
 #HTTP
 
-#SMB
+
+##Port 53 [DNS]
+
+/etc/hosts dosyasına domaini ekle
+
+dig ns active.htb
+
+ya da
+
+nslookup
+server 10.10.10.100
+
+Zone transfer için;
+dig @ns1.example.com example.com axfr
+
+ya da
+
+host -l active.htb 10.10.10.100
+
+(dnsrecon da kullanılabilir)
+
+
+##Port 139 & 445 [SMB]
+
+SMB paylaşımlarının kontrol edilmesi;
+
+smbmap -H active.htb
+smbmap -H 10.10.10.100 
 
