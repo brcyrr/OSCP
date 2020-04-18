@@ -1,7 +1,8 @@
 #HTTP
 
+-------------------------------------------------------------------------------------------------------------------------------
 
-##Port 53 [DNS]
+##DNS
 
 /etc/hosts dosyasına domaini ekle
 
@@ -21,11 +22,41 @@ host -l active.htb 10.10.10.100
 
 (dnsrecon da kullanılabilir)
 
+-------------------------------------------------------------------------------------------------------------------------------
 
-##Port 139 & 445 [SMB]
+##SMB
 
 SMB paylaşımlarının kontrol edilmesi;
 
 smbmap -H active.htb
 smbmap -H 10.10.10.100 
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+##NFS
+
+Genele açık paylaşımların kontrol edilmesi;
+
+showmount -e 10.10.10.100
+/var
+/asd
+
+mkdir brc
+mount 10.10.10.100:/var brc  -> kendi makinemizde oluşturduğumuz /brc dizinine hedefte açık olan /var dizinini mount ediyoruz.
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+Notes - Flags:
+
+type local.txt && ipconfig
+type proof.txt && ipconfig
+
+
+cat local.txt && ifconfig
+cat proof.txt && ifconfig
+
+
+
 
