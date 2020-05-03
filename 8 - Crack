@@ -1,1 +1,13 @@
+#Possible Hash
+ hash-identifier
+ 2F635F6D20E3FDE0C53075A84B68FB07DCEC9B03
+ 
+#with John
+ john --rules --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+ 
+#with Hashcat
+ hashcat -m 13100 -a 0 hash.txt /usr/share/wordlists/rockyou.txt --force
+
+#with Online
+ https://crackstation.net/
 
