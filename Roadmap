@@ -1,0 +1,7 @@
+Steps to be followed for the machine solution;
+
+1. Port scan
+2. Enumeration 
+3. Vulnerability research
+4. The exploitation of vulnerability (user shell)
+5. Privilege escalation (root/administrator shell)
