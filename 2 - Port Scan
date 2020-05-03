@@ -1,8 +1,22 @@
 #Full Port Scan
-nmap -p- --open -vvv 10.10.10.9 -oN fullportscan
+nmap -p- --open -vvv <victim_ip> -vvv -oN fullportscan
 
-#Version Scan
-nmap -p 80,445 -sV -sC -vvv 10.10.10.9 oN versionscan
+#Script & Version Scan
+nmap -p 80,445 -sV -sC -vvv <victim_ip> -vvv -O -oN versionscan
+
+#No Ping Scan 
+nmap -Pn <victim_IP> -vvv -oN nopingscan
+
+#Vuln Scan
+nmap -p 445 -T4 -Pn -A --script smb-vuln* <victim_ip> -vvv -oN vulnscan
+
+#No DNS Resolution
+nmap -n <victim_IP> -vvv -oN nopingscan
 
 #UDP Scan
-nmap -sU -p- --open -vvv 10.10.10.9 -oN udpscan
+nmap -sU --open -vvv <victim_ip> -oN udpscan
+
+
+#Script
+https://github.com/21y4d/nmapAutomator
+
