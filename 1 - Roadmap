@@ -11,20 +11,20 @@ Steps to be followed for the machine solution;
 File search;
 
 #for Windows 
-dir C:\ /s/b | find /i “root.txt”
+ dir C:\ /s/b | find /i “root.txt”
 
 #for Linux;
-updatedb
-locate root.txt
+ updatedb
+ locate root.txt
 
 -------------------------------------------------------------------------------------------------------------------------------
 
 File read;
 
 #for Windows
-type  C:\Users\Administrator\Desktop\root.txt
+ type  C:\Users\Administrator\Desktop\root.txt
 
 #for Linux
-cat /root/root.txt
+ cat /root/root.txt
 
 -------------------------------------------------------------------------------------------------------------------------------
