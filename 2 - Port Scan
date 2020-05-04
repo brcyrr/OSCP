@@ -11,7 +11,7 @@ nmap -Pn <victim_IP> -vvv -oN nopingscan
 nmap -p 445 -T4 -Pn -A --script smb-vuln* <victim_ip> -vvv -oN vulnscan
 
 #No DNS Resolution
-nmap -n <victim_IP> -vvv -oN nopingscan
+nmap -n <victim_IP> -vvv -oN nodnsresolutionscan
 
 #UDP Scan
 nmap -sU --open -vvv <victim_ip> -oN udpscan
