@@ -3,7 +3,8 @@ Steps to be followed for the machine solution;
 Note: If after each debug operation performed, the application has become unresponsive; Immunity Debugger should be closed first, then the "vulnapp.exe" application should be restarted, and Attach and Run should be done on Immunity Debugger.
 
 1. Segmentation fault;
-
+   Send enough length string for victim system crash
+   
 2. Find the offset;
    /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <String_Length>
 
@@ -32,10 +33,10 @@ Note: If after each debug operation performed, the application has become unresp
 
 
 5. Find a JMP ESP instruction;
-   !mona modules //Listing the modules
-   !mona modules -o //Listing only the modules that belong to the operating system.(We choose a module that has no memory protections and also does not contain bad characters at the pointer address.)
-   /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb //Detection of the JMP ESP value
-   !mona find -s “<JMP_ESP_Value>” -m vulnapp_dll.dll //Detection of the module in which JMP ESP value is passed
+   !mona modules                                                  #Listing the modules
+   !mona modules -o                                               #Listing only the modules that belong to the operating system.(We choose a module that has no memory protections and also does not contain bad characters at the pointer address.)
+   /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb    #Detection of the JMP ESP value
+   !mona find -s “<JMP_ESP_Value>” -m vulnapp_dll.dll             #Detection of the module in which JMP ESP value is passed
 
    
 
