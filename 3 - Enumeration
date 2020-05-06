@@ -170,9 +170,9 @@ Firstly add the domain information detected during port scans to the file "/etc/
 #Check null sessions;
  rpcclient -U "" -N <victim_ip>
   > srvinfo
-	 > enumdomusers
+  > enumdomusers
   > getdompwinfo
-	 > querydominfo
+  > querydominfo
  
  Note: It is found on old windows servers.
  
